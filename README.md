@@ -7,7 +7,7 @@ So I thought you could just as well have a dynamic website
 with PDF (and PostScript) instead of HTML!
 
 But what library or framework to use? (Other than [xxm](https://github.com/stijnsanders/xxm), that is.)\
-Nààh, we're all into rolling our own PDF's. Because we can.\
+Nààh, we're all into [rolling our own PDF's](https://www.adobe.com/devnet/pdf/pdf_reference.html). Because we can.\
 Fonts in PDF/PostScript are still a bit of a mystery to me,\
 but page objects like annotations with a link action are not.
 
