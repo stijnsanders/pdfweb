@@ -1,0 +1,22 @@
+{
+	"name": "pdfweb",
+	"compileCommand": "dcc32 -U[[HandlerPath]]public -Q [[ProjectName]].dpr",
+	"files": {
+		"default_xxm": {
+			"path": "Default.xxm",
+			"unitName": "default_xxm1",
+			"unitPath": ""
+		},
+		"tadaa_xxm": {
+			"path": "Tadaa.xxm",
+			"unitName": "tadaa_xxm1",
+			"unitPath": ""
+		}
+	},
+	"units": {
+		"pdfMaker": {}
+	},
+	"resources": {},
+	"lastModified": "2019-07-13T00:06:41",
+	"uuid": "{F1A1305D-FE5A-41BF-B420-DBF46D113E99}"
+}

@@ -1,0 +1,55 @@
+[[@pdfMaker,Classes]][[!var
+p:TPdfMaker;
+m:TMemoryStream;
+res:AnsiString;
+px:pdfPT;
+]][[
+FormatSettings.DecimalSeparator:='.';
+m:=TMemoryStream.Create;
+try
+  p:=TPdfMaker.Create;
+  try
+    p.OpenPdfStream(m,false,'pdfweb Home Page');
+    //p.CompressCode:=false;
+    px:=MM_to_pdfPT(12);
+
+    p.AddPage(
+
+      //res
+      '/Font<</F1 '+pdfIDRef(p.AddObj(HelveticaBold))
+      +'/F2 '+pdfIDRef(p.AddObj(Helvetica))
+      +'>>',
+
+      //dict
+      ps('/MediaBox[0 0 ? ?]',[MM_to_pdfPT(148.5),MM_to_pdfPT(105)])
+      +'/Annots['+pdfIDRef(p.AddObj('/Type/Annot/Subtype/Link/Rect[100 50 200 100]/A<</Type/Action/S/URI/URI'+psStr('Tadaa.xxm')+'>>'))+']'#10,
+
+      //code
+      ps('q BT /F1 16 Tf 0 1 1 0 k ? ? Td ',[px,MM_to_pdfPT(105-10)])+psStr('A PDF website','Tj')+' ET Q'#10
+      +ps('q BT /F2 12 Tf 14 TL 0 0 0 1 k ? ? Td ',[px,MM_to_pdfPT(105-20)])
+      +psStr('I noticed it''s possible to have hyper-links in a PDF document,',psStr1)
+      +psStr('and nowadays, PDF''s open right in the same browser window.',psStrN)
+      +psStr('(Is it because JavaScript has gotten this strong?',psStrN)
+      +psStr('It''s not only doable but just plain better security.)',psStrN)
+      +psStr('So I thought you could just as well have a dynamic website',psStrN)
+      +psStr('with PDF (and PostScript) instead of HTML!',psStrN)
+      +psStr('',psStrN)
+      +psStr(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz',Now)+', Your internet address: "'+Context.ContextString(csRemoteAddress)+'"',psStrN)
+      +psStr('Your user agent:',psStrN)
+      +'/F2 7 Tf '
+      +psStr(Context.ContextString(csUserAgent),psStrN)
+      +' ET Q'#10
+      +ps('q 0 0 0 1 k 1 w 100 50 100 50 re s Q'#10,[])
+      +'BT /F1 14 Tf 0 0 0 0.7 k 110 60 Td(Click me!)Tj ET'#10
+      );
+    p.ClosePdf;
+  finally
+    p.Free;
+  end;
+  m.Position:=0;
+  Context.AutoEncoding:=aeContentDefined;
+  Context.ContentType:='application/pdf';
+  Context.SendStream(TStreamAdapter.Create(m,soReference));
+finally
+  m.Free;
+end;

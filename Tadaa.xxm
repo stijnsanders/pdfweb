@@ -1,0 +1,37 @@
+[[@pdfMaker,Classes]][[!var
+p:TPdfMaker;
+m:TMemoryStream;
+res:AnsiString;
+]][[
+FormatSettings.DecimalSeparator:='.';
+m:=TMemoryStream.Create;
+try
+  p:=TPdfMaker.Create;
+  try
+    p.OpenPdfStream(m,false,'pdfweb Second Page');
+    //p.CompressCode:=false;
+    p.AddPage(
+
+      //res
+      '/Font<</F1 '+pdfIDRef(p.AddObj(HelveticaBold))+'>>',
+
+      //dict
+      ps('/MediaBox[0 0 ? ?]',[MM_to_pdfPT(148.5),MM_to_pdfPT(105)])
+      +'/Annots['+pdfIDRef(p.AddObj('/Type/Annot/Subtype/Link/Rect[100 100 200 150]/A<</Type/Action/S/URI/URI'+psStr('.')+'>>'))+']'#10,
+
+      //code
+      ps('q BT /F1 16 Tf 0 1 1 0 k ? ? Td ',[MM_to_pdfPT(20),MM_to_pdfPT(105-20)])+psStr('It works!','Tj')+' ET Q'#10
+      +'q 0 0 0 1 k 1 w 100 100 100 50 re s Q'#10
+      +'BT /F1 14 Tf 0 0 0 0.7 k 110 110 Td (back)Tj ET'#10
+      );
+    p.ClosePdf;
+  finally
+    p.Free;
+  end;
+  m.Position:=0;
+  Context.AutoEncoding:=aeContentDefined;
+  Context.ContentType:='application/pdf';
+  Context.SendStream(TStreamAdapter.Create(m,soReference));
+finally
+  m.Free;
+end;
